@@ -1,4 +1,8 @@
-var startBtn = document.querySelector("#startBtn");
+var startBtnEl = $('#startQuiz');
+
+(function startQuiz() {
+    DocumentTimeline.querySelector("click", )
+}) ;
 
 (function Quiz() {
     var questions = [{
@@ -50,7 +54,29 @@ var startBtn = document.querySelector("#startBtn");
         choices: ["Public", "if...else", "or...else", "something...else"],
         correctAnswer: "if...else"
     }]
-})
+});
 
-startBtn.addEventListener("click", Quiz);
+// startBtn.addEventListener("click", Quiz () {
 
+// });
+
+// startBtnEl.add('click', Quiz () {
+//     var random = Quiz.random(), 
+//     console.log(random),
+//     return
+// })
+
+
+var timerEl=document.querySelector(".timer");
+var secondsLeft = 30;
+
+//keeps track of the time left during quiz
+function setTime() {
+    var timerInterval= setInterval(function () {
+        secondsLeft--;
+        timerEl.textContent= secondsLeft + "seconds left";
+        if(secondsLeft==0) {
+            clearInterval(timerInterval);
+        }
+    },1)
+}
