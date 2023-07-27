@@ -1,15 +1,39 @@
-html, body {
-  font-family: sans-serif;
-  background-color: #f9fbfd;
-}
-
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+/*GENERAL STYLING */
+
+body {
+  background-color: sandybrown;
+}
+
+header { 
+  background-color: skyblue;
+}
+
+nav { 
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 40px 90px 20px 90px;
+}
+
+main {
+  margin: 100px 20vw;
+}
+
+section {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
 }
 
 
-
-#title-container {
+.title-container {
   display: block;
   margin: 80px auto; 
   text-align: center;
@@ -19,7 +43,44 @@ html, body {
   /* background-color: #c9c4b2; */
 }
 
+/* HEADER */
+
+nav h3 {
+  font-size: 24px;
+}
+
+.highscores {
+  color: snow;
+}
+
+.highscores:hover {
+  color: black;
+}
+
+/*TITLE*/
+
+/* .title-container {
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+} */
+
+p { 
+  font-size: 25px;
+  text-align: center;
+  margin: 15px 0;
+}
+
 button {
-  background-color: blueviolet;
-  color: white
+  margin: 10px 0;
+  background-color: rgb(23, 196, 144);
+  color: white;
+  border: none;
+  font-size: 1.8vw;
+  padding: 8px;
+  border-radius: 10px;
+}
+
+button:hover {
+  color: black;
 }
