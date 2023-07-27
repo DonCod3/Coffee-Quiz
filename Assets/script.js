@@ -3,7 +3,7 @@ let timeleft = 60;
 let currentSlide = 1;
 let scoreArr;
 let questionObj = {
-    questions = [{
+    questions : [{
         question: "What is the purpose of JavaScript (JS) in web development?",
         choices: ["It allows developers to create dynamically updating content, use animations, pop-up menus, clickable buttons, control multimedia, etc.", "It allows us to order coffee while coding.", "It's cute.", "JavaScript is used in place of HTML."],
         correctAnswer: "It allows developers to create dynamically updating content, use animations, pop-up menus, clickable buttons, control multimedia, etc."
@@ -52,10 +52,66 @@ let questionObj = {
         choices: ["Public", "if...else", "or...else", "something...else"],
         correctAnswer: "if...else"
     }]
-}
+};
         
-    
 
+//Remove elements from main section
+let clearMain = function() {
+    while (mainBody.firstChild) {
+        mainBody.removeChild(mainBody.firstChild)
+    }
+};
+
+let loadAnswers = function() {
+    let anserButtons = document.querySelector(".answerDiv").children;
+    let arr = [];
+    let num;
+    for(let i = 0; i < answerButtons.length; i++) {
+        let randomize = function() {
+            num = Math.floor(Math.random() * answerButtons.length) +1;
+            if(arr.indexOf(num) >=0) {
+                return randomize();
+            };
+            return num;
+        };
+        arr.push(randomize());
+    };
+
+    for(let i = 0; i < answerButtons.length; i++) {
+        answerButtons[i].id = "answer" + arr[i];
+        let questionKey = "question" + currentSlide;
+        let cal = arr[i] - 1;
+        anserButtons[i].textContent = questionObj[questionKey].answers[val];
+    }
+};
+
+//section containing questions
+let addQuestionSection = function() {
+};
+
+//begin quiz
+let startQuiz = function() {
+    clearMain();
+    currentSlide = 1;
+    timeleft = 60;
+
+    let newSection;
+    for(let i = 0; i < 3; i++) {
+        if(i == 0) {
+            newSection = addQuestionSection();
+        } else if(i == 1) {
+            newSection = addAnswerSection();
+        } else if(i == 2) {
+            newSection = addFeedbackSection();
+        }
+        mainBody.appendChild(newSection);
+    }
+    loadQA();
+    checkAnswer();
+    startTimer(mainBody);
+};
+
+document.querySelector(".startQuiz").addEventListener("click",startQuiz);
 
 // var startBtnEl = $('#startQuiz');
 
@@ -129,8 +185,6 @@ let questionObj = {
 var timerEl = document.getElementById("timer");
 
 function countdown() {
-    var timeleft = 30;
-
     var timerInterval = setInterval(function () {
         if(timeleft > 0) {
             timerEl.textContent = timeleft + ' seconds left';
