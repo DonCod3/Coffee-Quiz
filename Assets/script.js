@@ -62,6 +62,32 @@ let clearMain = function() {
     }
 };
 
+
+let checkAnswer = function() {
+    let answerButtons = document.querySelectorAll(".choices");
+    //add event listener to each choice
+    answerButtons.forEach(btn => {
+        btn.addEventListener("mousedown", function(Event) {
+            if(Event.currentTarget.id === (".correctAnswer")) {
+                feedbackHeader.textContent = "Correct!";
+            } else {
+                feedbackHeader.textContent = "Wrong";
+                timeleft = timeleft - 10;
+            }
+        })
+        btn.addEventListener("mouseup", loadQA);
+    })
+};
+
+let loadQuestion = function() {
+    let questionKey = ".question" + currentSlide;
+    let currentQuestion = questionObj[questionKey].question;
+
+    return currentQuestion;
+};
+
+
+
 let loadAnswers = function() {
     let anserButtons = document.querySelector(".answerDiv").children;
     let arr = [];
@@ -85,9 +111,81 @@ let loadAnswers = function() {
     }
 };
 
+let loadQA = function() {
+    if (currentSlide <= Object.keys(questionObj).length) {
+        let question = document.querySelector(".question");
+        question.textContent = loadQuestion();
+        loadAnswers();
+        currentSlide++;
+    } else {
+        currentSlide++;
+        endGame();
+    }
+};
+
 //section containing questions
 let addQuestionSection = function() {
+    newSection = document.createElement("section");
+    newSection.className = "questionSection";
+
+    let newDiv = document.createElement("div")
+    newDiv.className = "questionDiv";
+    newSection.appendChild(newDiv);
+
+    let questionHeader = document.createElement("h1");
+    questionHeader.className = "question";
+    newDiv.appendChild(questionHeader)
+
+    return newSection;
 };
+
+//section containing answers
+let addAnswerSection = function() {
+    newSection.className = "answerSection";
+    newDiv = document.createElement("div");
+    newDiv.className = "answerDiv";
+    newSection.appendChild(newDiv);
+
+    for(let i = 0; i < 4; i++) {
+        let btn = document.createElement("button");
+        btn.className = "answers";
+        newDiv.appendChild(btn);
+    };
+    loadAnswers();
+
+    return newSection;
+};
+
+let addFeedbackSection = function() {
+    newSection = document.createElement("section");
+    newSection.className = "feedbackSection";
+    //new element for feedback
+    let feedbackHeader = document.createElement("h2");
+    feedbackHeader.id = "feedback";
+    newSection.appendChild(feedbackHeader);
+
+    return newSection;
+};
+
+
+
+let timerEl = document.getElementById("timer");
+
+function countdown() {
+    var timerInterval = setInterval(function () {
+        if(timeleft > 0) {
+            timerEl.textContent = timeleft + ' seconds left';
+            timeleft--;
+        } else {
+            timerEl.textContent = '';
+            clearInterval(timerInterval);
+            displayMessage();
+        }
+    }, 1000);
+}
+countdown();
+
+
 
 //begin quiz
 let startQuiz = function() {
@@ -111,108 +209,5 @@ let startQuiz = function() {
     startTimer(mainBody);
 };
 
-document.querySelector(".startQuiz").addEventListener("click",startQuiz);
+document.querySelector(".startQuiz").addEventListener("click", startQuiz)
 
-// var startBtnEl = $('#startQuiz');
-
-// (function startQuiz() {
-//     DocumentTimeline.querySelector("click", )
-// }) ;
-
-// (function Quiz() {
-//     var questions = [{
-//         question: "What is the purpose of JavaScript (JS) in web development?",
-//         choices: ["It allows developers to create dynamically updating content, use animations, pop-up menus, clickable buttons, control multimedia, etc.", "It allows us to order coffee while coding.", "It's cute.", "JavaScript is used in place of HTML."],
-//         correctAnswer: "It allows developers to create dynamically updating content, use animations, pop-up menus, clickable buttons, control multimedia, etc."
-//     }, {
-//         question: "What is not a data type recognized by JavaScript?",
-//         choices: ["Integer", "Float", "Boolean", "Imaginary Number"],
-//         correctAnswer: "Imaginary Number"
-//     },  {
-//         question: "To check the type of data, use console.log( ___ + variable in question);", 
-//         choices: ["whatIs", "typeWriter", "typefo", "typeof"],
-//         correctAnswer: "typeof"
-//     },  {
-//         question: "Functions are reusable blocks of code that perform ____",
-//         choices: ["Acrobatics", "Miracles", "A specific task", "All of the above"],
-//         correctAnswer: "A specific task"
-//     },  {
-//         question: "Function arguments give parameters their ___",
-//         choices: ["Values", "Morals", "perimeters", "Food"],
-//         correctAnswer: "Values"
-//     },  {
-//         question: "A collection of properties can be grouped by:",
-//         choices: ["Random", "Class", "Grade", "Objects"],
-//         correctAnswer: "Objects"
-//     },  {
-//         question: "the keyword 'this' refers to the ____ object",
-//         choices: ["specific", "Global", "Earthly", "Object"],
-//         correctAnswer: "Global"
-//     },  {
-//         question: "Data types have access to specific _____, that allow us to handle instances of that data type.",
-//         choices: ["Standards", "Methods", "Names", "instances"],
-//         correctAnswer: "Methods"
-//     },  {
-//         question: "Which of the following is an example of a built in method",
-//         choices: ["Scientific", "Body Wash", "Number.jump()", "Number.isInteger()"],
-//         correctAnswer: "Number.isInteger"
-//     },  {
-//         question: "Let is a keyword update courtesy of ____",
-//         choices: ["Joe Biden", "ES6", "EQS", "ES5"],
-//         correctAnswer: "ES6"
-//     },  {
-//         question: "There are _ logical operators",
-//         choices: ["3", "A few", "5"],
-//         correctAnswer: "3"
-//     }, {
-//         question: "Ternary operators can be used to simplify what kind of statments?", 
-//         choices: ["Public", "if...else", "or...else", "something...else"],
-//         correctAnswer: "if...else"
-//     }]
-// });
-
-// startBtn.addEventListener("click", Quiz () {
-
-// });
-
-// startBtnEl.add('click', Quiz () {
-//     var random = Quiz.random(), 
-//     console.log(random),
-//     return
-// })
-
-
-var timerEl = document.getElementById("timer");
-
-function countdown() {
-    var timerInterval = setInterval(function () {
-        if(timeleft > 0) {
-            timerEl.textContent = timeleft + ' seconds left';
-            timeleft--;
-        } else {
-            timerEl.textContent = '';
-            clearInterval(timerInterval);
-            displayMessage();
-        }
-    }, 1000);
-}
-countdown();
-
-// var msgInterval = setInterval(function () {
-//     if (words[wordCount] === undefined) {
-//         clearInterval(msgInterval);
-//     } else {
-
-//     }
-// })
-
-// //keeps track of the time left during quiz
-// function setTime() {
-//     var timerInterval= setInterval(function () {
-//         secondsLeft--;
-//         timerEl.textContent= secondsLeft + "seconds left";
-//         if(secondsLeft==0) {
-//             clearInterval(timerInterval);
-//         }
-//     },1)
-// }
