@@ -62,21 +62,25 @@ let clearMain = function() {
     }
 };
 
+let endGame = function() {
+    clearMain();
+    // addEndGameScreen();
+};
+
 
 let checkAnswer = function() {
     let answerButtons = document.querySelectorAll(".choices");
-    //add event listener to each choice
     answerButtons.forEach(btn => {
-        btn.addEventListener("mousedown", function(Event) {
-            if(Event.currentTarget.id === (".correctAnswer")) {
-                feedbackHeader.textContent = "Correct!";
+        btn.addEventListener("mousedown", function(event) {
+            if (Event.currentTarget.textContent === questionObj.questions[currentSlide - 1].correctAnswer) {
+                feedbackHeader.textContent = "correct!";
             } else {
-                feedbackHeader.textContent = "Wrong";
+                feedbackHeader.textContent = "Wrong!";
                 timeleft = timeleft - 10;
             }
-        })
-        btn.addEventListener("mouseup", loadQA);
-    })
+        });
+        btn.addEventListener("mouseup".loadQA);
+    });
 };
 
 let loadQuestion = function() {
@@ -95,7 +99,7 @@ let loadAnswers = function() {
     for(let i = 0; i < answerButtons.length; i++) {
         let randomize = function() {
             num = Math.floor(Math.random() * answerButtons.length) +1;
-            if(arr.indexOf(num) >=0) {
+            if (arr.indexOf(num) >= 0) {
                 return randomize();
             };
             return num;
@@ -107,7 +111,7 @@ let loadAnswers = function() {
         answerButtons[i].id = "answer" + arr[i];
         let questionKey = "question" + currentSlide;
         let cal = arr[i] - 1;
-        anserButtons[i].textContent = questionObj[questionKey].answers[val];
+        anserButtons[i].textContent = questionObj.questions[currentSlide - 1].choices[cal]; 
     }
 };
 
@@ -140,17 +144,19 @@ let addQuestionSection = function() {
 };
 
 //section containing answers
+
 let addAnswerSection = function() {
+    let newSection = document.createElement("section");
     newSection.className = "answerSection";
-    newDiv = document.createElement("div");
+    let newDiv = document.createElement("div");
     newDiv.className = "answerDiv";
     newSection.appendChild(newDiv);
 
-    for(let i = 0; i < 4; i++) {
+    for (let i = 0; i < 4; i++) {
         let btn = document.createElement("button");
-        btn.className = "answers";
+        btn.className = "choices";
         newDiv.appendChild(btn);
-    };
+    }
     loadAnswers();
 
     return newSection;
@@ -169,22 +175,26 @@ let addFeedbackSection = function() {
 
 
 
-let timerEl = document.getElementById("timer");
 
-function countdown() {
-    var timerInterval = setInterval(function () {
-        if(timeleft > 0) {
-            timerEl.textContent = timeleft + ' seconds left';
+
+let startTimer = function() {
+    let timer = document.querySelector(".timer");
+    timeleft = 60;
+    let timerFunction = setInterval(function() {
+        if(timeleft < 0) {
+            timeleft = 0;
+        };
+
+        if(timeleft > 0 && currentSlide < 13) {
             timeleft--;
+            timer.textContent = timeleft;
         } else {
-            timerEl.textContent = '';
-            clearInterval(timerInterval);
-            displayMessage();
+            clearInterval(timerFunction);
+            timer.textContent = timeleft;
+            endGame();
         }
-    }, 1000);
-}
-countdown();
-
+    }, 1000)
+};
 
 
 //begin quiz
